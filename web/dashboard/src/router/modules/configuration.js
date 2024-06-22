@@ -478,6 +478,36 @@ const Configuration = {
         title: "ValidatingwebhookconfigurationEdit",
         activeMenu: "/validatingwebhookconfigurations",
       }
+    },
+    {
+      path: "/apiservices",
+      requirePermission: {
+        apiGroup: "apiregistration.k8s.io",
+        resource: "apiservices",
+        verb: "list",
+        scope:"cluster"
+      },
+      component: () => import("@/business/configuration/apiservices"),
+      name: "Apiservices",
+      meta: {
+        title: "Apiservices",
+      }
+    },
+    {
+      path: "/apiservices/edit/:name",
+      requirePermission: {
+        apiGroup: "apiregistration.k8s.io",
+        resource: "apiservices",
+        verb: "update",
+      },
+      component: () => import("@/business/configuration/apiservices/edit"),
+      name: "ApiserviceEdit",
+      hidden: true,
+      props: true,
+      meta: {
+        title: "ApiserviceEdit",
+        activeMenu: "/apiservices",
+      }
     }
   ]
 }
