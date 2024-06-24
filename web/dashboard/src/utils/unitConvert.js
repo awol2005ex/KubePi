@@ -19,8 +19,21 @@ export function memoryUnitConvert(value) {
     return Number(value.replace("Mi", ""))
   } else if (value.indexOf("Gi") !== -1) {
     return Number(value.replace("Gi", "")) * 1024
+  } else if (value.indexOf("m") !== -1) {
+    return Number(value.replace("m", "")) / 1000.00 / 1024.00 /1024.00 
+  } else if (value.indexOf("M") !== -1) {
+    return Number(value.replace("M", ""))  * 1024.00 /1000.00
   } else {
     return Number(value)
   }
 }
+
+export function numberConvert(value) {
+  if (value.indexOf("k") !== -1) {
+    return Number((Number(value.replace("k", ""))*1000).toFixed(2))
+  } else {
+    return Number(value)
+  }
+}
+
 
