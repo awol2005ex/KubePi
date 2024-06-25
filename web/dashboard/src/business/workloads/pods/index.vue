@@ -140,7 +140,7 @@ import {downloadYaml} from "@/utils/actions"
 import ComplexTable from "@/components/complex-table"
 import {checkPermissions} from "@/utils/permission"
 import writeXlsxFile from "write-excel-file";
-import { cpuUnitConvert, memoryUnitConvert, numberConvert } from "@/utils/unitConvert"
+import { cpuUnitConvert, memoryUnitConvert } from "@/utils/unitConvert"
 import { listPodMetrics } from "@/api/apis"
 
 export default {
