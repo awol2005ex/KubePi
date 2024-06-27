@@ -160,7 +160,7 @@ export default {
     },
     onUpgrade (row) {
       this.$router.push({ name: "AppUpgrade", params: {name: row.name } })
-    },
+},
     //导出helm releases原始chart
     async onDownloadHelmReleases(row) {
        this.loading=true

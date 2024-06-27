@@ -451,7 +451,7 @@ export default {
         await writeXlsxFile(data, {
          schema,
          fileName: "nodes.xlsx",
-        });
+      });
       }catch(e){
         console.log(e)
       }

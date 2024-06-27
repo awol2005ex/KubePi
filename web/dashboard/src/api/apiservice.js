@@ -43,3 +43,4 @@ export function changeApiservice(cluster_name,name,data) {
   return patch(`${mcUrl(cluster_name,)}/${name}`, data)
 }
 
+

@@ -129,7 +129,7 @@ export default {
   },
   data() {
     return {
-      sourceYaml:{},
+sourceYaml:{},
       form: {
         metadata: {},
         spec: {
