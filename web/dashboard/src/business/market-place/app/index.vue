@@ -95,7 +95,7 @@ export default {
             this.onDelete(row)
           }
         },
-{
+        {
           label: "export",
           icon: "el-icon-download",
           click: (row) => {
@@ -107,15 +107,17 @@ export default {
   },
   methods: {
     search (change) {
+      /*
       if (change) {
         this.paginationConfig = {
           currentPage: 1,
           pageSize: 10,
           total: 0,
         }
-      }
+      }*/
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
+      console.log( currentPage, pageSize )
       searchInstalled(this.cluster, currentPage, pageSize, this.searchConfig.keywords).then(res => {
         this.data = res.data.items
         this.paginationConfig.total = res.data.total
