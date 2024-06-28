@@ -57,6 +57,7 @@ const message = {
       rollback: "Roll Back",
       refresh: "Refresh",
       show_more: "Show More",
+      export_excel: "Export",
     },
     table: {
       name: "Name",
@@ -214,7 +215,6 @@ const message = {
       usage: " usage",
       core: "core",
       taints: "Taints",
-      export_excel: "export to excel",
     },
     pod: {
       image: "Image",
