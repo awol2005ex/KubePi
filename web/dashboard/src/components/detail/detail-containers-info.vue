@@ -154,19 +154,24 @@
             </el-card>
           </el-col>
         </el-row>
+        
       </div>
     </el-form>
     <br>
+    <el-row style="margin-top: 20px">
+          <KoDetailContainersMetrics :containerInfo="containerInfo" :cluster="cluster"  :yamlInfo="yamlInfo"/>
+    </el-row>
   </div>
 </template>
 
 <script>
 import ComplexTable from "@/components/complex-table"
-
+import KoDetailContainersMetrics from "@/components/detail/detail-containers-metrics.vue"
 export default {
   name: "KoDetailContainerInfo",
-  components: { ComplexTable },
+  components: { ComplexTable, KoDetailContainersMetrics },
   props: {
+    cluster: String,
     yamlInfo: Object,
     containerInfo: Object,
   },
