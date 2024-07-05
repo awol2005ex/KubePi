@@ -106,15 +106,7 @@ export default {
     }
   },
   methods: {
-    search (change) {
-      /*
-      if (change) {
-        this.paginationConfig = {
-          currentPage: 1,
-          pageSize: 10,
-          total: 0,
-        }
-      }*/
+    search () {
       this.loading = true
       const { currentPage, pageSize } = this.paginationConfig
       console.log( currentPage, pageSize )
