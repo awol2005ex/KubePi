@@ -117,7 +117,7 @@ export class TerminalComponent implements AfterViewInit {
       fontFamily: 'Consolas, "Courier New", monospace',
       bellStyle: 'sound',
       cursorBlink: true,
-    });
+          });
     const fitAddon = new FitAddon();
     this.term.loadAddon(fitAddon);
     this.term.open(this.anchorRef.nativeElement);
@@ -148,7 +148,7 @@ export class TerminalComponent implements AfterViewInit {
     this.connectionClosed_ = false;
 
     // Make sure the terminal is with correct display size.
-    // this.onTerminalResize();
+    this.onTerminalResize();
 
     // Focus on connection
     this.term.focus();
