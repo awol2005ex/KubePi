@@ -19,6 +19,8 @@ func (h *Handler) LoggingHandler() iris.Handler {
 		follow := false
 		/*是否查看上次失败的容器日志*/
 		previous :=false
+		/*是否显示日志时间*/
+		timestamps :=false
 		if ctx.URLParamExists("tailLines") {
 			lines, err := ctx.URLParamInt("tailLines")
 			if err != nil {
@@ -43,6 +45,16 @@ func (h *Handler) LoggingHandler() iris.Handler {
 			}
 			previous = p
 		}
+		if ctx.URLParamExists("timestamps") {
+			p, err := ctx.URLParamBool("timestamps")
+			if err != nil {
+				ctx.StatusCode(iris.StatusBadRequest)
+				return
+			}
+			timestamps = p
+		}
+
+		
 		sessionId, err := logging.GenLoggingSessionId()
 		if err != nil {
 			ctx.StatusCode(iris.StatusInternalServerError)
@@ -64,7 +76,7 @@ func (h *Handler) LoggingHandler() iris.Handler {
 			Id:    sessionId,
 			Bound: make(chan error),
 		})
-		go logging.WaitForLoggingStream(client, namespace, podName, containerName, tailLines,  follow, previous, sessionId)
+		go logging.WaitForLoggingStream(client, namespace, podName, containerName, tailLines,  follow, previous,timestamps, sessionId)
 		ctx.Values().Set("data", TerminalResponse{ID: sessionId})
 	}
 }
