@@ -103,7 +103,7 @@ func (f service) DownloadFile(request file.Request) (string, error) {
 		return "", err
 	}
 	fileP = filepath.Join(fileP, fileNameWithSuffix)
-	err = pt.CopyFromPod(request.Path, fileP)
+	err = pt.CopyFileFromPod(request.Path, fileP)
 	if err != nil {
 		return "", err
 	}
@@ -126,7 +126,7 @@ func (f service) DownloadFolder(request file.Request) (string, error) {
 		return "", err
 	}
 	fileP = filepath.Join(fileP, fileName+".tar")
-	err = pt.CopyFromPod(request.Path, fileP)
+	err = pt.CopyFolderFromPod(request.Path, fileP)
 	if err != nil {
 		return "", err
 	}
