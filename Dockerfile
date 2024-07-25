@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:experimental
 FROM node:18.10.0-alpine as stage-web-build
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add --no-cache make
@@ -12,7 +13,7 @@ WORKDIR /build/kubepi/web
 
 COPY . .
 
-RUN make build_web
+RUN --mount=type=cache,target=/build/kubepi/web/dashboard/node_modules,id=my_web_dashboard_module,sharing=locked --mount=type=cache,target=/build/kubepi/web/kubepi/node_modules,id=my_web_kubepi_module,sharing=locked --mount=type=cache,target=/build/kubepi/web/terminal/node_modules,id=my_web_terminal_module,sharing=locked make build_web
 
 RUN rm -fr web
 
@@ -30,10 +31,10 @@ WORKDIR /build/kubepi/bin
 
 COPY --from=stage-web-build /build/kubepi/web .
 
-RUN go mod download
+RUN --mount=type=cache,target=/root/go,id=my_app_go_module,sharing=locked go mod download
 
-RUN make build_gotty
-RUN make build_bin
+RUN --mount=type=cache,target=/root/go,id=my_app_go_module,sharing=locked make build_gotty
+RUN --mount=type=cache,target=/root/go,id=my_app_go_module,sharing=locked make build_bin
 
 FROM alpine:3.16
 
