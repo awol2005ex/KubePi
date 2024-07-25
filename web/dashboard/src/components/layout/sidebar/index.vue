@@ -15,7 +15,11 @@
                               :item="route"
                               :base-path="route.path"/>
             </el-menu>
+            <div v-if="!isCollapse">
+              <el-button class="copyRight" style="" type="text" @click="openApi">{{ $t('commons.personal.copy_right') }}</el-button>
+            </div>
         </el-scrollbar>
+
     </div>
 </template>
 
@@ -29,6 +33,11 @@
         components: {SidebarItem, Logo},
         data() {
             return {}
+        },
+        methods: {
+          openApi(){
+            window.open("https://www.fit2cloud.com/", "_blank");
+          }
         },
         computed: {
             ...mapGetters([
@@ -110,7 +119,7 @@
     }
 
     .sidebar {
-        height: 100%;
+        height: calc(100% - 30px);
 
         .el-scrollbar {
             box-sizing: border-box;
@@ -299,5 +308,12 @@
                 border-radius: 20px;
             }
         }
+    }
+    .copyRight {
+        margin-left: 20px;
+        position: fixed;
+        float: center;
+        bottom: 10px;
+        font-size: 14px;
     }
 </style>
