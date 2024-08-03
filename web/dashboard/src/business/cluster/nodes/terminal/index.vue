@@ -1,6 +1,11 @@
 <template>
   <div style="background-color: #1f2224" >
-   
+    <el-row>
+      <div style="float: right;margin-top: 15px;margin-bottom: 5px;margin-right: 30px">
+        <span style="font-size: 20px; color: white">node path / is mounted to shell /host</span>
+      </div>
+
+    </el-row>
     <el-row>
       <div>
         <iframe :key="isRefresh" :src="terminal.url" :style="{'height': height}" style="width: 100%;border: 0"></iframe>
