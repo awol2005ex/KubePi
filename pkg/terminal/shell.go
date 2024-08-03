@@ -360,6 +360,13 @@ func startNodeShellProcess(k8sClient kubernetes.Interface, cfg *rest.Config, nod
 			SecurityContext: &v1.SecurityContext{
 				Privileged : ptr.To(true),
 			},
+			//挂载hostPath到容器中
+			VolumeMounts: []v1.VolumeMount{
+			    {
+					Name:      "host-root",
+					MountPath: "/host",
+				},
+			},
 		}
 	
 	
@@ -383,6 +390,17 @@ func startNodeShellProcess(k8sClient kubernetes.Interface, cfg *rest.Config, nod
 					{
 							Key: "NoExecute",
 							Operator: v1.TolerationOpExists,
+					},
+				},
+				//挂载hostPath到容器中
+				Volumes: []v1.Volume{
+				    v1.Volume{
+						Name: "host-root",
+						VolumeSource: v1.VolumeSource{
+								HostPath: &v1.HostPathVolumeSource{
+									Path: "/",
+								},
+						},
 					},
 				},
 			},
