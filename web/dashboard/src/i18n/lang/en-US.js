@@ -29,6 +29,7 @@ const message = {
     button: {
       click_to_edit: "Click to edit",
       delete: "Delete",
+      delete_force: "Force Delete",
       import: "Import",
       create: "Create",
       cancel: "Cancel",
