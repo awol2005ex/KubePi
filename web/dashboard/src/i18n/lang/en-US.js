@@ -540,7 +540,7 @@ const message = {
       api_group: "API Group",
       node_port: "Node Port",
       relationship_chart: "Relationship Chart",
-      service_whole_domain: "Service whole domain",
+service_whole_domain: "Service whole domain",
       service_simple_domain: "Service simple domain",
       service_domain_same_namespace: "Service domain in the same namespace",
     },
