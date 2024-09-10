@@ -5,6 +5,8 @@ go 1.22
 require (
 	github.com/asdine/storm/v3 v3.2.1
 	github.com/coreos/etcd v3.3.13+incompatible
+	github.com/coreos/go-oidc v2.2.1+incompatible
+	github.com/crewjam/saml v0.4.14
 	github.com/docker/distribution v2.8.2+incompatible
 	github.com/go-ldap/ldap/v3 v3.4.1
 	github.com/gofrs/flock v0.8.1
@@ -19,6 +21,7 @@ require (
 	github.com/swaggo/swag v1.8.2
 	github.com/xlzd/gotp v0.0.0-20220110052318-fab697c03c2c
 	golang.org/x/crypto v0.21.0
+	golang.org/x/oauth2 v0.10.0
 	golang.org/x/text v0.14.0
 	gopkg.in/igm/sockjs-go.v2 v2.1.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -51,6 +54,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/beevik/etree v1.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chai2010/gettext-go v1.0.2 // indirect
@@ -58,6 +62,7 @@ require (
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
+	github.com/crewjam/httperr v0.2.0 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/cli v24.0.6+incompatible // indirect
@@ -85,6 +90,7 @@ require (
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20230922105210-14b16010c2ee // indirect
@@ -106,6 +112,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jmoiron/sqlx v1.3.5 // indirect
+	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kataras/blocks v0.0.7 // indirect
@@ -122,6 +129,7 @@ require (
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mailgun/raymond/v2 v2.0.48 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mattermost/xml-roundtrip-validator v0.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
@@ -145,11 +153,13 @@ require (
 	github.com/opencontainers/image-spec v1.1.0-rc5 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
+	github.com/pquerna/cachecontrol v0.1.0 // indirect
 	github.com/prometheus/client_golang v1.16.0 // indirect
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
 	github.com/rubenv/sql-migrate v1.5.2 // indirect
+	github.com/russellhaering/goxmldsig v1.3.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
@@ -175,7 +185,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.19.0 // indirect
 	go.starlark.net v0.0.0-20230525235612-a134d8f9ddca // indirect
 	golang.org/x/net v0.23.0 // indirect
-	golang.org/x/oauth2 v0.10.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/term v0.18.0 // indirect
@@ -187,6 +196,7 @@ require (
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gotest.tools/v3 v3.5.0 // indirect
 	k8s.io/apiserver v0.29.0 // indirect

@@ -14,13 +14,17 @@
                   v-has-permissions="{scope:'namespace',apiGroup:'',resource:'pods',verb:'delete'}">
         {{ $t("commons.button.delete") }}
       </el-button>
+      <el-button type="primary" size="small" :disabled="selects.length===0" @click="onForceDelete()"
+                  v-has-permissions="{scope:'namespace',apiGroup:'',resource:'pods',verb:'delete'}">
+        {{ $t("commons.button.delete_force") }}
+      </el-button>
       <el-button type="primary" size="small"
                    @click="exportToXlsx()" icon="el-icon-download">
         {{ $t("commons.button.export") }}
       </el-button>
     </div>
     <complex-table :selects.sync="selects" :data="data" v-loading="loading" :pagination-config="paginationConfig"
-                   :search-config="searchConfig" @search="search" @sort-change='sortTableFun'>
+                   :search-config="searchConfig" @search="search" @sort-change='sortTableFun' :showFullTextSwitch="true" @update:isFullTextSearch="OnIsFullTextSearchChange">
       <el-table-column type="selection" fix ></el-table-column>
       <el-table-column :label="$t('commons.table.name')" prop="name" min-width="80" show-overflow-tooltip fix sortable="name">
         <template v-slot:default="{row}">
@@ -121,8 +125,11 @@
                 </el-dropdown-item>
               </div>
               <el-dropdown-item icon="el-icon-download" command="download">{{ $t("commons.button.download_yaml") }}</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-delete" :disabled="!onCheckPermissions()" command="delete">
+              <el-dropdown-item icon="el-icon-delete" :disabled="!onCheckDeletePermissions()" command="delete">
                 {{ $t("commons.button.delete") }}
+              </el-dropdown-item>
+              <el-dropdown-item icon="el-icon-delete" :disabled="!onCheckDeletePermissions()" command="delete_force">
+                {{ $t("commons.button.delete_force") }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -135,14 +142,14 @@
 
 <script>
 import LayoutContent from "@/components/layout/LayoutContent"
-import {listWorkLoads, deleteWorkLoad, getWorkLoadByName} from "@/api/workloads"
+import {listWorkLoads, deleteWorkLoad, getWorkLoadByName, forceDeleteWorkLoad} from "@/api/workloads"
 import {downloadYaml} from "@/utils/actions"
 import ComplexTable from "@/components/complex-table"
 import {checkPermissions} from "@/utils/permission"
 import writeXlsxFile from "write-excel-file";
 import { cpuUnitConvert, memoryUnitConvert } from "@/utils/unitConvert"
 import { listPodMetrics } from "@/api/apis"
-
+import { searchFullTextItems } from "@/api/fulltextsearch/fulltextsearch"
 export default {
   name: "Pods",
   components: { LayoutContent, ComplexTable },
@@ -162,7 +169,8 @@ export default {
       clusterName: "",
       podUsage: [],
       orderField: null,
-      orderMethod: null
+      orderMethod: null,
+      isFullTextSearch: false
     }
   },
   methods: {
@@ -173,7 +181,7 @@ export default {
         query: { yamlShow: false }
       })
     },
-    onCheckPermissions () {
+    onCheckDeletePermissions () {
       return checkPermissions({ scope: "namespace", apiGroup: "", resource: "pods", verb: "delete" })
     },
     checkExecPermissions () {
@@ -195,6 +203,9 @@ export default {
           break
         case "delete":
           this.onDelete(row)
+          break
+        case "delete_force":
+          this.onForceDelete(row)
           break
         case "files":
           this.openPodFiles(row)
@@ -284,6 +295,37 @@ export default {
         }
       })
     },
+    onForceDelete (row) {
+      this.$confirm(this.$t("commons.confirm_message.delete"), this.$t("commons.message_box.prompt"), {
+        confirmButtonText: this.$t("commons.button.confirm"),
+        cancelButtonText: this.$t("commons.button.cancel"),
+        type: "warning",
+      }).then(() => {
+        this.ps = []
+        if (row) {
+          this.ps.push(forceDeleteWorkLoad(this.clusterName, "pods", row.metadata.namespace, row.metadata.name))
+        } else {
+          if (this.selects.length > 0) {
+            for (const select of this.selects) {
+              this.ps.push(forceDeleteWorkLoad(this.clusterName, "pods", select.metadata.namespace, select.metadata.name))
+            }
+          }
+        }
+        if (this.ps.length !== 0) {
+          Promise.all(this.ps)
+            .then(() => {
+              this.search(true)
+              this.$message({
+                type: "success",
+                message: this.$t("commons.msg.delete_success"),
+              })
+            })
+            .catch(() => {
+              this.search(true)
+            })
+        }
+      })
+    },
     onCreate () {
       this.$router.push({ name: "PodCreateYaml", query: { type: "pods" } })
     },
@@ -352,8 +394,8 @@ export default {
       if (resetPage) {
         this.paginationConfig.currentPage = 1
       }
-      if(!this.orderField || !this.orderMethod){
-      listWorkLoads(this.clusterName, "pods", true, this.searchConfig.keywords, this.paginationConfig.currentPage, this.paginationConfig.pageSize)
+      if( (!this.orderField || !this.orderMethod ) && !this.isFullTextSearch){
+        listWorkLoads(this.clusterName, "pods", true, this.searchConfig.keywords, this.paginationConfig.currentPage, this.paginationConfig.pageSize)
         .then((res) => {
           this.data =this.doWithPodList( res.items )
           this.paginationConfig.total = res.total
@@ -363,10 +405,17 @@ export default {
       } else {
         let currentPage=this.paginationConfig.currentPage
         let pageSize=this.paginationConfig.pageSize
-        listWorkLoads(this.clusterName, "pods", true, this.searchConfig.keywords)
+
+        listWorkLoads(this.clusterName, "pods", false, "")
         .then((res) => {
-          this.data = this.doWithPodList( res.items ).slice(currentPage*pageSize-pageSize,currentPage*pageSize)
-          this.paginationConfig.total = res.total
+          let results=[]
+          if(!this.isFullTextSearch){
+               results = this.doWithPodList( res.items  );
+          } else {
+               results = this.doWithPodList(searchFullTextItems(res.items,this.searchConfig.keywords));
+          } 
+          this.data =results.slice(currentPage*pageSize-pageSize,currentPage*pageSize)
+          this.paginationConfig.total = results.length
         }).finally(() => {
           this.loading = false
         })
@@ -488,6 +537,10 @@ export default {
          schema,
          fileName: "pods.xlsx",
       });
+    },
+    //改变选项"是否全文搜索"
+    OnIsFullTextSearchChange(val){
+      this.isFullTextSearch=val
     }
   },
   mounted () {

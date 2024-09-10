@@ -262,7 +262,9 @@ export default {
     openFolderCreate () {
       this.openAddFolder = true
       this.folderForm = {}
-      this.$refs["folderForm"].resetFields()
+      this.$nextTick(() => {
+        this.$refs["folderForm"].resetFields()
+      })
     },
     openFileCreate () {
       this.openAddFile = true
@@ -270,10 +272,13 @@ export default {
     },
     openRename (name) {
       this.openRenamePage = true
-      this.renameForm = {
-        oldName: name
-      }
-      this.$refs["renameForm"].resetFields()
+      
+      this.$nextTick(() => {
+         this.$refs["renameForm"].resetFields()
+         this.renameForm = {
+           oldName: name
+         }
+      })
     },
     openUploadPage (dir) {
       this.files = []
@@ -384,7 +389,8 @@ export default {
           this.editFile = true
           this.fileForm.name = row.name
           this.fileForm.content = res.data
-        }).finally(() => {
+        }).catch(error => this.$message.error(error.message))
+        .finally(() => {
           this.loading = false
         })
       } else {
@@ -420,7 +426,11 @@ export default {
         return
       }
       const url = this.getUrl(row.name)
-      window.open("/kubepi/api/v1/pod/files/download" + url, "_blank")
+      //区分文件和目录,目录tar打包下载,文件直接下载(应对部分镜像tar命令异常导致下载不了)
+      if(row["mode"].startsWith("d"))
+      window.open("/kubepi/api/v1/pod/files/download/folder" + url, "_blank")
+        else
+      window.open("/kubepi/api/v1/pod/files/download/file" + url, "_blank")
     },
     getUrl (name) {
       this.fileRequest.path = this.getPath(name)

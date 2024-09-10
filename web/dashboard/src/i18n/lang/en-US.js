@@ -16,6 +16,7 @@ const message = {
       talk: "Participate in the discussion",
       star: "Star",
       version: "Version",
+      copy_right: "Copyright © 2021-2024 FIT2CLOUD",
       introduction: "KubePi is a modern K8s panel.",
       introduction2: "KubePi allows administrators to import multiple Kubernetes clusters and assign permissions of different clusters and namespaces to specific users through permission control. It allows developers to manage and troubleshoot applications running in the Kubernetes cluster to better deal with the complexity in the Kubernetes cluster."
     },
@@ -23,10 +24,12 @@ const message = {
       help: "Help",
       about: "About",
       ko_docs: "Official Document",
+      dev_doc: "Development Document",
     },
     button: {
       click_to_edit: "Click to edit",
       delete: "Delete",
+      delete_force: "Force Delete",
       import: "Import",
       create: "Create",
       cancel: "Cancel",
@@ -85,7 +88,8 @@ const message = {
       Unknown: "Unknown",
     },
     search: {
-      quickSearch: "Search"
+      quickSearch: "Search",
+      fullTextSearch: "Full Text Search",
     },
     form: {
       name: "Name",
@@ -139,7 +143,7 @@ const message = {
         name: "Name"
       }
     },
-actions:{
+    actions:{
       copy: "Copy",
     }
   },
@@ -275,6 +279,7 @@ actions:{
       name_helper: "Support '/' to create multi-level directories",
       link_tip: "This operation is not supported for linked files/folders",
       previous: "last failure log",
+      timestamps: "show timestamps"
     },
     namespace: {
       namespace: "Namespace",
@@ -503,6 +508,9 @@ actions:{
       single_read_write: "Single-Node(Read/Write)",
       many_read_only: "Many-Node(Read-Only)",
       many_read_write: "Many-Node(Read/Write)",
+
+      pod_whole_domain: "Pod whole domain",
+      pod_simple_domain: "Pod simple domain",
     },
     network: {
       service_discovery: "Service Discovery",
@@ -531,6 +539,10 @@ actions:{
       non_resource_url: "Non Resource URL",
       api_group: "API Group",
       node_port: "Node Port",
+      relationship_chart: "Relationship Chart",
+service_whole_domain: "Service whole domain",
+      service_simple_domain: "Service simple domain",
+      service_domain_same_namespace: "Service domain in the same namespace",
     },
     storage: {
       provisioner: "Provisioner",
@@ -591,7 +603,7 @@ actions:{
       name: "Name",
       split_help: "Multiple values are separated by commas",
       best_effort: "The {0} scope restricts a quota to tracking the following resource:",
-certificate_info: "Certificate Info",
+      certificate_info: "Certificate Info",
       certificate_signatureAlgorithm: "signatureAlgorithm",
       certificate_validity: "validity",
       certificate_outdate: "The certificate is out of date",

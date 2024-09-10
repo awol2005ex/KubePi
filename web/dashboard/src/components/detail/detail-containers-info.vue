@@ -5,6 +5,12 @@
       <el-row :gutter="20" style="margin-top: 20px" class="row-box">
         <el-col :span="8">
           <el-card class="el-card" :title="$t('business.pod.image')">
+            <el-form-item label="State" v-if="containerStatusStates[container.name]!=''">
+              <span><pre>{{containerStatusStates[container.name]}}</pre></span>
+            </el-form-item>
+            <el-form-item label="LastState" v-if="containerStatusLastStates[container.name]!=''">
+              <span></span><pre>{{containerStatusLastStates[container.name]}}</pre></span>
+            </el-form-item>
             <el-form-item :label="$t('business.workload.pull_policy')">
               <span>{{container.imagePullPolicy}}</span>
             </el-form-item>
@@ -56,10 +62,10 @@
               </complex-table>
             </div>
 
-            <div v-if="container.resources.limits || container.resources.requests">
+            <div v-if="container.resources && (container.resources.limits || container.resources.requests)">
               <h4 style="display: inline-block;">{{$t('business.workload.resource')}}</h4>
               <el-row :gutter="20">
-                <div v-if="container.resources.requests">
+                <div v-if="container.resources && container.resources.requests">
                   <el-col v-if="container.resources.requests.cpu" :span="12">
                     <el-form-item :label="'CPU ' + $t('business.workload.reservation') + ' (mCPUs)'">
                       <span>{{container.resources.requests.cpu}}</span>
@@ -71,7 +77,7 @@
                     </el-form-item>
                   </el-col>
                 </div>
-                <div v-if="container.resources.limits">
+                <div v-if="container.resources && container.resources.limits">
                   <el-col v-if="container.resources.limits.cpu" :span="12">
                     <el-form-item :label="'CPU ' + $t('business.workload.limit') + ' (mCPUs)'">
                       <span>{{container.resources.limits.cpu}}</span>
@@ -99,7 +105,7 @@
                 <el-form-item :label="$t('business.workload.type')">
                   <span>exec</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.exec.command" :label="$t('business.workload.command')">
+                <el-form-item v-if="item._model.exec && item._model.exec.command" :label="$t('business.workload.command')">
                   <div v-for="(item, index) in item._model.exec.command" :key="index">
                     <el-tag v-if="item.length < 200" type="success">{{item}}</el-tag>
                     <div v-else style="background-color: #1F261E;line-height: 20px;"><span class="spanStyle">{{item}}</span></div>
@@ -110,7 +116,7 @@
                 <el-form-item :label="$t('business.workload.type')">
                   <span>tcpSocket</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.exec.port" :label="$t('business.network.port')">
+                <el-form-item v-if="item._model.exec && item._model.exec.port" :label="$t('business.network.port')">
                   <span>{{item._model.exec.port}}</span>
                 </el-form-item>
               </div>
@@ -118,10 +124,10 @@
                 <el-form-item :label="$t('business.workload.type')">
                   <span>httpGet</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.httpGet.path" :label="$t('business.workload.check_path')">
+                <el-form-item v-if="item._model.httpGet && item._model.httpGet.path" :label="$t('business.workload.check_path')">
                   <span>{{item._model.httpGet.path}}</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.httpGet.port" :label="$t('business.workload.check_port')">
+                <el-form-item v-if="item._model.httpGet && item._model.httpGet.port" :label="$t('business.workload.check_port')">
                   <span>{{item._model.httpGet.port}}</span>
                 </el-form-item>
               </div>
@@ -129,10 +135,10 @@
                 <el-form-item :label="$t('business.workload.type')">
                   <span>httpsGet</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.httpsGet.path" :label="$t('business.workload.check_path')">
+                <el-form-item v-if="item._model.httpGet &&  item._model.httpsGet.path" :label="$t('business.workload.check_path')">
                   <span>{{item._model.httpsGet.path}}</span>
                 </el-form-item>
-                <el-form-item v-if="item._model.httpsGet.port" :label="$t('business.workload.check_port')">
+                <el-form-item v-if="item._model.httpsGet && item._model.httpsGet.port" :label="$t('business.workload.check_port')">
                   <span>{{item._model.httpsGet.port}}</span>
                 </el-form-item>
               </div>
@@ -209,6 +215,14 @@ export default {
             }
             this.loading = false
           }
+          this.containerStatuses={}
+         
+          for(let i=0,s=newYamlInfo.status.containerStatuses.length;i<s;i++){
+            const item=newYamlInfo.status.containerStatuses[i]
+            this.containerStatuses[item.name] = item
+            this.containerStatusStates[item.name] =this.getContainerStatusState(item.name)
+            this.containerStatusLastStates[item.name] =this.getContainerStatusLastState(item.name)
+          }
         }
       },
       immediate: true,
@@ -262,8 +276,43 @@ export default {
         image: "",
         resources: {},
       },
+      containerStatuses:{},
+      containerStatusStates:{},
+      containerStatusLastStates:{}
     }
   },
+  methods:{
+     getContainerStatusState(container_name){
+       
+       const status= this.containerStatuses[container_name]
+
+       let state ="\n"
+       if(status.state){
+        for(let key in status.state) {
+          state = state +key +"\n" 
+          for(let attr in  status.state[key]){
+            state = state +attr+":"+status.state[key][attr] +"\n" 
+          }
+        }
+       }
+       return state
+     },
+     getContainerStatusLastState(container_name){
+       
+       const status= this.containerStatuses[container_name]
+
+       let state ="\n"
+       if(status.lastState){
+        for(let key in status.lastState) {
+          state = state +key +"\n" 
+          for(let attr in  status.lastState[key]){
+            state = state +attr+":"+status.lastState[key][attr] +"\n" 
+          }
+        }
+       }
+       return state
+     }
+  }
 }
 </script>
 

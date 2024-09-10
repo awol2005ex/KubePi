@@ -17,6 +17,7 @@ const message = {
       talk: "参与讨论",
       star: "点亮 Star",
       version: "版本",
+      copy_right: "Copyright © 2021-2024 飞致云",
       introduction: "KubePi 是一个现代化的 K8s 面板。",
       introduction2: "KubePi 允许管理员导入多个 Kubernetes 集群，并且通过权限控制，将不同 cluster、namespace 的权限分配给指定用户。它允许开发人员管理 Kubernetes 集群中运行的应用程序并对其进行故障排查，供开发人员更好地处理 Kubernetes 集群中的复杂性。",
     },
@@ -24,10 +25,12 @@ const message = {
       help: "帮助",
       about: "关于",
       ko_docs: "官方文档",
+      dev_doc: "开发文档",
     },
     button: {
       click_to_edit: "编辑信息",
       delete: "删除",
+      delete_force: "强制删除",
       import: "导入",
       create: "创建",
       cancel: "取消",
@@ -86,7 +89,8 @@ const message = {
       Unknown: "未知",
     },
     search: {
-      quickSearch: "搜索"
+      quickSearch: "搜索",
+      fullTextSearch: "全文搜索",
     },
     form: {
       name: "名称",
@@ -140,7 +144,7 @@ const message = {
         name: "名称"
       }
     },
-actions:{
+    actions:{
       copy: "复制",
     }
   },
@@ -276,6 +280,7 @@ actions:{
       name_helper: "支持 '/' 来创建多级目录",
       link_tip: "链接文件/文件夹 不支持此操作",
       previous: "上次失败的日志",
+      timestamps: "显示日志时间"
     },
     namespace: {
       namespace: "命名空间",
@@ -505,6 +510,9 @@ actions:{
       many_read_only: "多节点只读",
       many_read_write: "多节点读写",
 
+      pod_whole_domain: "完整域名",
+      pod_simple_domain: "域名简称",
+
     },
     network: {
       service_discovery: "服务发现",
@@ -533,6 +541,10 @@ actions:{
       non_resource_url: "非资源URL",
       api_group: "API 组",
       node_port: "节点端口",
+      relationship_chart: "关系图",
+      service_whole_domain: "完整域名",
+      service_simple_domain: "域名简称",
+      service_domain_same_namespace: "同一命名空间下域名",
     },
     storage: {
       provisioner: "提供商",
