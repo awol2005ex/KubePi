@@ -16,7 +16,7 @@ export function searchFullTextItems(items, keywords) {
     })
 
     return idx.query(function (q) {
-        q.term("*"+keywords+"*", { presence: lunr.Query.presence.REQUIRED, fields: ['body'] })
+        q.term("*"+keywords.toLowerCase()+"*", { presence: lunr.Query.presence.REQUIRED, fields: ['body'] })
       }).map(function (result) {
         return itemsMap[result.ref]
     })
