@@ -15,7 +15,9 @@ export function searchFullTextItems(items, keywords) {
         }, this)
     })
 
-    return idx.search(keywords).map(function (result) {
+    return idx.query(function (q) {
+        q.term("*"+keywords+"*", { presence: lunr.Query.presence.REQUIRED, fields: ['body'] })
+      }).map(function (result) {
         return itemsMap[result.ref]
     })
 }
