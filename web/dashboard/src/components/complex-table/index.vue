@@ -105,7 +105,7 @@ export default {
     /*监控自动刷新变量*/
    "$store.state.app.autorefresh":{
     handler:function(newVal,oldVal){
-      if(newVal=='-1'){
+      if(!newVal ||  newVal=='-1' || newVal=='undefined' || newVal==''){
         this.stopTimeTick();
       } else {
         this.stopTimeTick();

@@ -33,6 +33,9 @@ export default {
   },
   async mounted () {
     this.autorefresh =localStorage.getItem("autorefresh")
+    if(!this.autorefresh || this.autorefresh === 'undefined' || this.autorefresh === ''){
+      this.autorefresh = '-1'
+    }
     await this.$store.dispatch("app/setAutorefresh", this.autorefresh)
 
   },
